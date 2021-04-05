@@ -6,7 +6,6 @@ x = datetime.datetime.now()
 
 accountBalance = []
 
-
 auth.welcome
 auth.login
 auth.register
