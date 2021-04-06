@@ -1,8 +1,5 @@
-import datetime
 import auth
 import atmOptions
-
-x = datetime.datetime.now()
 
 auth.welcome
 auth.login

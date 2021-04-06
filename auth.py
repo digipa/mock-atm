@@ -1,18 +1,8 @@
 # --- Welcome ---
-# --- Register ---
-# first name, last name, password, password match, email
-# --- Generate Account Number ---
-
-# --- Login ---
-# account number, password
-# --- Generate Account Number ---
-
-
-
-# --- Other Improvements ---
-
-# --- Welcome ---
 import random
+import datetime
+
+x = datetime.datetime.now()
 
 database = {}
 
@@ -21,18 +11,6 @@ allowedPasswords = []
 firstName = []
 lastName = []
 email = []
-
-def welcome():
-    print("Welcome to GCU Bank. %s" % x.strftime("%c"))
-    haveAccount = int(input("Do you have an account with us? 1: yes 2: no \n"))
-    if haveAccount == 1:
-        login()
-    elif haveAccount == 2:
-        register()
-    else:
-        print("Option invalid")
-        welcome()
-
 
 # --- Login ---
 # account number, password
@@ -46,19 +24,10 @@ def login():
         userId = allowedUsers.index(name)
         if password == allowedPasswords[userId]:
             print('Welcome %s' % name)
-            # option()
         else:
             print('Password Incorrect, please try again')
     else:
         print('Name not found, please try again')
-
-    accountNumber = generateAccountNumber()
-
-    database[accountNumber] = [ firstName, lastName, email, password ]
-
-
-# --- Register ---
-# first name, last name, password, password match, email
 
 def register():
     firstName.append(input("First Name \n"))
@@ -72,9 +41,29 @@ def register():
         print('Passwords match')
     else:
         print('Passwords do not match')
-        # register()
     login()
-    
+
+def welcome():
+    print("Welcome to GCU Bank. %s" % x.strftime("%c"))
+    haveAccount = int(input("Do you have an account with us? 1: yes 2: no \n"))
+    if haveAccount == 1:
+        login()
+    elif haveAccount == 2:
+        register()
+    else:
+        print("Option invalid")
+        welcome()
+welcome()
+
+
+
+accountNumber = generateAccountNumber()
+
+database[accountNumber] = [ firstName, lastName, email, password ]
+
+# --- Register ---
+# first name, last name, password, password match, email
+
 
 def generateAccountNumber():
     return random.randrange(1000000000, 9999999999)
