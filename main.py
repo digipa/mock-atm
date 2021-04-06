@@ -4,12 +4,10 @@ import atmOptions
 
 x = datetime.datetime.now()
 
-accountBalance = []
-
 auth.welcome
 auth.login
 auth.register
-atmOptions.option
+atmOptions.mainOptions
 
 # name = input("What is your Username? \n")
 # if name in allowedUsers:
