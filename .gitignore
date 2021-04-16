@@ -2,3 +2,5 @@
 __pycache__/
 atmOptions.pyc
 auth.pyc
+*.iml
+*.xml
