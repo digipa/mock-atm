@@ -7,9 +7,37 @@ user_db_path = "data/user_record/"
 
 --------------------------------------------------- C R E A T E ------------------------------------------------------
 
-def create(user_account_number):
+def create(user_account_number, first_name, last_name, email, password):
 # add does_email_exist, does_account_number_exist
 # add a try except block which contains read, and delete functions
+
+    user_data = first_name + "," + last_name + "," + email + "," + password + "," +str(0)
+
+    if does_account_number_exist(user_account_number):
+        
+        return False
+    
+    if does_email_exist(email):
+        print("User already exists")
+        return False
+    
+    completion_state = False
+
+    try:
+        f = open(user_db_path + str(user_account_number) + ".txt")
+        
+        if not does_file_contain_data:
+            delete(user_account_number)
+        
+        else:
+
+            f.write(str(user_data));
+            completion_state = True
+
+        finally:
+
+            f.close();
+            return completion_state
 
 
 ----------------------------------------------------- R E A D --------------------------------------------------------
@@ -20,7 +48,7 @@ def read(user_account_number):
     try:
         if is_valid_account_number:
             f = open(user_db_path + str(user_account_number) + ".txt", "r")
-            
+
         else:
             f = open(user_db_path + user_account_number, "r")
 
@@ -47,7 +75,21 @@ def update(user_account_number):
 
 def delete(user_account_number):
 
+    is_delete_successful = False
 
+    if os.path.exists(user_db_path + str(user_account_number) + ".txt"):
+        
+        try:
+            os.remove(user_db_path + str(user_account_number) + ".txt")
+            is_delete_successful = True
+        
+        except FileNotFoundError:
+
+            print("User not found")
+            
+        finally:
+
+            return is_delete_successful
 
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
