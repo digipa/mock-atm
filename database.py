@@ -5,13 +5,13 @@ import validation
 
 user_db_path = "data/user_record/"
 
---------------------------------------------------- C R E A T E ------------------------------------------------------
+# --------------------------------------------------- C R E A T E ------------------------------------------------------
 
 def create(user_account_number, first_name, last_name, email, password):
 # add does_email_exist, does_account_number_exist
 # add a try except block which contains read, and delete functions
 
-    user_data = first_name + "," + last_name + "," + email + "," + password + "," +str(0)
+    user_data = first_name + "," + last_name + "," + email + "," + password + "," + str(0)
 
     if does_account_number_exist(user_account_number):
         
@@ -24,23 +24,27 @@ def create(user_account_number, first_name, last_name, email, password):
     completion_state = False
 
     try:
-        f = open(user_db_path + str(user_account_number) + ".txt")
-        
+        f = open(user_db_path + str(user_account_number) + ".txt", "x")
+    
+    except FileExistsError:
+
+        does_file_contain_data = read(user_db_path + str(user_account_number) + ".txt")
+
         if not does_file_contain_data:
             delete(user_account_number)
         
-        else:
+    else:
 
-            f.write(str(user_data));
-            completion_state = True
+        f.write(str(user_data));
+        completion_state = True
 
-        finally:
+    finally:
 
-            f.close();
-            return completion_state
+        f.close();
+        return completion_state
 
 
------------------------------------------------------ R E A D --------------------------------------------------------
+# ----------------------------------------------------- R E A D --------------------------------------------------------
 
 def read(user_account_number):
     is_valid_account_number = validation.account_number_validation(user_account_number)
@@ -66,12 +70,12 @@ def read(user_account_number):
 
     return False
 
---------------------------------------------------- U P D A T E ------------------------------------------------------
+# --------------------------------------------------- U P D A T E ------------------------------------------------------
 
 def update(user_account_number):
     print("Update user record")
 
---------------------------------------------------- D E L E T E ------------------------------------------------------
+# --------------------------------------------------- D E L E T E ------------------------------------------------------
 
 def delete(user_account_number):
 
@@ -91,26 +95,38 @@ def delete(user_account_number):
 
             return is_delete_successful
 
-----------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
 def does_email_exist(email):
+    
     all_users = os.listdir(user_db_path)
+
     for user in all_users:
         user_list = str.split(read(user), ',')
+    
         if email in user_list:
             return True
+    
     return False
 
 def does_account_number_exist(account_number):
 
     all_users = os.listdir(user_db_path)
+    
     for user in all_users:
+    
         if user == str(account_number) + ".txt":
             return True
+    
     return False
 
 def authenticated_user(account_number, password):
-    if does_account_number_exist(account_number)
+    
+    if does_account_number_exist(account_number):
         user = str.split(read(account_number), ',')
-        if password == user[3]
+    
+        if password == user[3]:
+            return user
+    
+    return False

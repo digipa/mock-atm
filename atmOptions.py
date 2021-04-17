@@ -1,6 +1,6 @@
 accountBalance = []
 
-def mainOptions(user):
+def main_options(user):
 
     print('Welcome %s %s' % (user[0], user[1]))
 
@@ -8,29 +8,29 @@ def mainOptions(user):
 
     if selection == 1:
         balance()
-        mainOptions(user)
+        main_options(user)
 
     elif selection == 2:
         withdrawal()
-        mainOptions(user)
+        main_options(user)
 
     elif selection == 3:
         deposit()
-        mainOptions(user)
+        main_options(user)
 
     elif selection == 4:
         complaint()
-        mainOptions(user)
+        main_options(user)
 
     elif selection == 5:
-        mainOptions(user)
+        main_options(user)
 
     elif selection == 6:
         print('Thank you %s %s. We look forward to seeing you again.' % (user[0], user[1]))
         exit()
     else:
         invalidOption()
-        mainOptions(user)
+        main_options(user)
 
 def balance():
     print('Your balance is %s.' % sum(accountBalance))
@@ -50,4 +50,4 @@ def complaint():
 def invalidOption():
     print('That is an invalid option')
 
-    mainOptions(user)
+    main_options(user)
