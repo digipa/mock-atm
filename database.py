@@ -4,10 +4,11 @@ import os
 import validation
 
 user_db_path = "data/user_record/"
+auth_session_path = "data/auth_session/"
 
 # --------------------------------------------------- C R E A T E ------------------------------------------------------
 
-def create(user_account_number, first_name, last_name, email, password):
+def create( user_account_number, first_name, last_name, email, password, account_balance ):
 # add does_email_exist, does_account_number_exist
 # add a try except block which contains read, and delete functions
 
@@ -43,6 +44,13 @@ def create(user_account_number, first_name, last_name, email, password):
         f.close();
         return completion_state
 
+# ---------------------------------------------- C R E A T E  A U T H -------------------------------------------------
+
+def create_auth_session( user_account_number ):
+
+        duplicated_user_record_file = open(user_db_path + str(user_account_number) + ".txt").read()
+        f = open(auth_session_path + str(user_account_number) + ".txt", "x")
+        f.write(str(duplicated_user_record_file));
 
 # ----------------------------------------------------- R E A D --------------------------------------------------------
 
@@ -70,10 +78,20 @@ def read(user_account_number):
 
     return False
 
+
 # --------------------------------------------------- U P D A T E ------------------------------------------------------
 
-def update(user_account_number):
+def update( user_account_number, user ):
     print("Update user record")
+    current_balance = user[4]
+    
+    updated_user = user[0] + "," + user[1] + "," + user[2] + "," + user[3] + "," + str(user[4])
+
+    user_db_path = "data/user_record/"
+    f = open(user_db_path + str(account_number_from_user) + ".txt", "w")
+    f.write(updated_user)
+    f.close()
+
 
 # --------------------------------------------------- D E L E T E ------------------------------------------------------
 
@@ -81,10 +99,10 @@ def delete(user_account_number):
 
     is_delete_successful = False
 
-    if os.path.exists(user_db_path + str(user_account_number) + ".txt"):
+    if os.path.exists(auth_session_path + str(user_account_number) + ".txt"):
         
         try:
-            os.remove(user_db_path + str(user_account_number) + ".txt")
+            os.remove(auth_session_path + str(user_account_number) + ".txt")
             is_delete_successful = True
         
         except FileNotFoundError:
@@ -95,8 +113,8 @@ def delete(user_account_number):
 
             return is_delete_successful
 
-# ----------------------------------------------------------------------------------------------------------------------
-# ----------------------------------------------------------------------------------------------------------------------
+
+# -------------------------------------------- AUTHENTICATION: Email, Account Number, Password -------------------------
 
 def does_email_exist(email):
     

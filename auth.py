@@ -3,9 +3,10 @@ import random
 import datetime
 import validation
 import database
-from atmOptions import main_options
+# from atmOptions import main_options
 from getpass import getpass
 
+account_balance = []
 x = datetime.datetime.now()
 
 def welcome():
@@ -43,22 +44,21 @@ def login():
         user = database.authenticated_user(account_number_from_user, password);
 
         if user:
+            auth_session_created = database.create_auth_session( account_number_from_user )
             main_options(user)
-
-        print('Invalid account or password')
-        login()
-    
+            
     else:
         print("Account number invalid:  Check that the account number is ten digits and contains only numbers")
-
+    
 
 # # --- Register ---
 # # first name, last name, password, password match, username, email
 
 def register():
+    # set_current_balance = str(0)
 
     print('REGISTER')
-    
+
     first_name = input("First Name \n")
     
     last_name = input("Last Name \n")
@@ -69,8 +69,8 @@ def register():
     
     account_number = generate_account_number()
     
-    is_user_created = database.create(account_number, first_name, last_name, email, password)
-    
+    is_user_created = database.create(account_number, first_name, last_name, email, password, str(account_balance))
+
     if is_user_created:
         print('Your account number is: %d \n' % account_number)
 
@@ -82,5 +82,70 @@ def register():
 
 def generate_account_number():
     return random.randrange(1000000000, 9999999999)
+
+def main_options(user):
+
+    print('Welcome %s %s' % (user[0], user[1]))
+
+    selection = int(input('What would you like to do?: 1: Balance 2: Withdrawal 3: Cash Deposit 4: Complaint 5: Main Options 6: Logout 7: Exit \n'))
+
+    if selection == 1:
+        balance()
+        main_options(user)
+
+    elif selection == 2:
+        withdrawal()
+        main_options(user)
+
+    elif selection == 3:
+        deposit()
+        main_options(user)
+
+    elif selection == 4:
+        complaint()
+        main_options(user)
+
+    elif selection == 5:
+        main_options(user)
+    
+    elif selection == 6:
+        logout()
+
+    elif selection == 7:
+        print('Thank you %s %s. We look forward to seeing you again.' % (user[0], user[1]))
+        logout()
+        exit()
+    else:
+        invalidOption()
+        main_options(user)
+
+def balance():
+    print('Your balance is %s.' % sum(account_balance))
+    
+def set_current_balance(user_details, balance):
+    user_details[4] = balance
+
+def get_current_balance(user_details):
+    return user_details[4]
+
+def withdrawal():
+    account_balance.append(-int(input('How much would you like to withdraw? \n')))
+    print('Take your cash \n')
+
+def deposit():
+    account_balance.append(int(input('How much would you like to deposit? \n')))
+    print('Your current balance is %s' % sum(account_balance))
+
+def complaint():
+    input('What issue will you like to report? \n')
+    print('Thank you for contacting us')
+
+def invalidOption():
+    print('That is an invalid opti1on')
+    main_options(user)
+
+def logout():
+    database.delete(account_number_from_user)
+    login()
 
 welcome()
