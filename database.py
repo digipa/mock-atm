@@ -44,7 +44,7 @@ def create( user_account_number, first_name, last_name, email, password, account
         f.close();
         return completion_state
 
-# ---------------------------------------------- C R E A T E  A U T H -------------------------------------------------
+# --------------------------------------- C R E A T E   A U T H   S E S S I O N ---------------------------------------
 
 def create_auth_session( user_account_number ):
 
@@ -81,14 +81,26 @@ def read(user_account_number):
 
 # --------------------------------------------------- U P D A T E ------------------------------------------------------
 
-def update( user_account_number, user ):
+def update_user_record( user_account_number, user ):
     print("Update user record")
     current_balance = user[4]
     
     updated_user = user[0] + "," + user[1] + "," + user[2] + "," + user[3] + "," + str(user[4])
 
-    user_db_path = "data/user_record/"
     f = open(user_db_path + str(account_number_from_user) + ".txt", "w")
+    f.write(updated_user)
+    f.close()
+
+
+# -------------------------------------- U P D A T E   A U T H   S E S S I O N  -----------------------------------------
+
+def update_auth_session( user_account_number, user ):
+    print("Update user record")
+    current_balance = user[4]
+    
+    updated_user = user[0] + "," + user[1] + "," + user[2] + "," + user[3] + "," + str(user[4])
+
+    f = open(auth_session_path + str(account_number_from_user) + ".txt", "w")
     f.write(updated_user)
     f.close()
 

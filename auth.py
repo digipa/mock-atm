@@ -6,7 +6,6 @@ import database
 # from atmOptions import main_options
 from getpass import getpass
 
-account_balance = []
 x = datetime.datetime.now()
 
 def welcome():
@@ -45,7 +44,7 @@ def login():
 
         if user:
             auth_session_created = database.create_auth_session( account_number_from_user )
-            main_options(user)
+            main_options(user, account_number_from_user)
             
     else:
         print("Account number invalid:  Check that the account number is ten digits and contains only numbers")
@@ -69,7 +68,7 @@ def register():
     
     account_number = generate_account_number()
     
-    is_user_created = database.create(account_number, first_name, last_name, email, password, str(account_balance))
+    is_user_created = database.create(account_number, first_name, last_name, email, password, str(0))
 
     if is_user_created:
         print('Your account number is: %d \n' % account_number)
@@ -83,33 +82,33 @@ def register():
 def generate_account_number():
     return random.randrange(1000000000, 9999999999)
 
-def main_options(user):
+def main_options(user_details, account_number_from_user ):
 
-    print('Welcome %s %s' % (user[0], user[1]))
+    print('Welcome %s %s' % (user_details[0], user_details[1]))
 
     selection = int(input('What would you like to do?: 1: Balance 2: Withdrawal 3: Cash Deposit 4: Complaint 5: Main Options 6: Logout 7: Exit \n'))
 
     if selection == 1:
         balance()
-        main_options(user)
+        main_options(user_details)
 
     elif selection == 2:
-        withdrawal()
-        main_options(user)
+        withdrawal( account_number_from_user, user_details )
+        main_options(user_details)
 
     elif selection == 3:
-        deposit()
-        main_options(user)
+        deposit( account_number_from_user, user_details )
+        main_options(user_details)
 
     elif selection == 4:
         complaint()
-        main_options(user)
+        main_options(user_details)
 
     elif selection == 5:
-        main_options(user)
+        main_options(user_details)
     
     elif selection == 6:
-        logout()
+        logout(account_number_from_user)
 
     elif selection == 7:
         print('Thank you %s %s. We look forward to seeing you again.' % (user[0], user[1]))
@@ -117,9 +116,10 @@ def main_options(user):
         exit()
     else:
         invalidOption()
-        main_options(user)
+        main_options(user_details)
 
 def balance():
+    set_current_balance(user_details, balance)
     print('Your balance is %s.' % sum(account_balance))
     
 def set_current_balance(user_details, balance):
@@ -128,12 +128,22 @@ def set_current_balance(user_details, balance):
 def get_current_balance(user_details):
     return user_details[4]
 
-def withdrawal():
-    account_balance.append(-int(input('How much would you like to withdraw? \n')))
+def withdrawal(user_details, account_number_from_user):
+    amount_to_withdrawal = int(input('How much would you like to withdraw? \n'))
+    user_current_balance = get_current_balance(user_details)
+    current_balance = int(user_current_balance) - amount_to_withdrawal
+    update_user_balance = set_current_balance(user_details, current_balance)
+    database.update_user_record( account_number_from_user, user_details )
+    database.update_auth_session( account_number_from_user, user_details )
     print('Take your cash \n')
 
-def deposit():
-    account_balance.append(int(input('How much would you like to deposit? \n')))
+def deposit(user_details, account_number_from_user):
+    amount_to_deposit = int(input('How much would you like to deposit? \n'))
+    user_current_balance = get_current_balance(user_details)
+    current_balance = int(user_current_balance) + amount_to_deposit
+    set_current_balance((user_details), str(current_balance))
+    database.update_user_record( account_number_from_user, user_details )
+    database.update_auth_session( account_number_from_user, user_details )
     print('Your current balance is %s' % sum(account_balance))
 
 def complaint():
@@ -142,9 +152,9 @@ def complaint():
 
 def invalidOption():
     print('That is an invalid opti1on')
-    main_options(user)
+    main_options(user_details)
 
-def logout():
+def logout(account_number_from_user ):
     database.delete(account_number_from_user)
     login()
 
