@@ -79,7 +79,7 @@ def read(user_account_number):
     return False
 
 
-# --------------------------------------------------- U P D A T E ------------------------------------------------------
+# ------------------------------------- U P D A T E   U S E R   R E C O R D --------------------------------------------
 
 def update_user_record( user_account_number, user ):
     print("Update user record")
@@ -87,7 +87,7 @@ def update_user_record( user_account_number, user ):
     
     updated_user = user[0] + "," + user[1] + "," + user[2] + "," + user[3] + "," + str(user[4])
 
-    f = open(user_db_path + str(account_number_from_user) + ".txt", "w")
+    f = open(user_db_path + str(user_account_number) + ".txt", "w")
     f.write(updated_user)
     f.close()
 
@@ -100,7 +100,7 @@ def update_auth_session( user_account_number, user ):
     
     updated_user = user[0] + "," + user[1] + "," + user[2] + "," + user[3] + "," + str(user[4])
 
-    f = open(auth_session_path + str(account_number_from_user) + ".txt", "w")
+    f = open(auth_session_path + str(user_account_number) + ".txt", "w")
     f.write(updated_user)
     f.close()
 

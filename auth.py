@@ -89,23 +89,23 @@ def main_options(user_details, account_number_from_user ):
     selection = int(input('What would you like to do?: 1: Balance 2: Withdrawal 3: Cash Deposit 4: Complaint 5: Main Options 6: Logout 7: Exit \n'))
 
     if selection == 1:
-        balance()
-        main_options(user_details)
+        balance(user_details)
+        main_options(user_details, account_number_from_user)
 
     elif selection == 2:
-        withdrawal( account_number_from_user, user_details )
-        main_options(user_details)
+        withdrawal( user_details, account_number_from_user )
+        main_options(user_details, account_number_from_user)
 
     elif selection == 3:
-        deposit( account_number_from_user, user_details )
-        main_options(user_details)
+        deposit( user_details, account_number_from_user )
+        main_options(user_details, account_number_from_user)
 
     elif selection == 4:
         complaint()
-        main_options(user_details)
+        main_options(user_details, account_number_from_user)
 
     elif selection == 5:
-        main_options(user_details)
+        main_options(user_details, account_number_from_user)
     
     elif selection == 6:
         logout(account_number_from_user)
@@ -116,11 +116,11 @@ def main_options(user_details, account_number_from_user ):
         exit()
     else:
         invalidOption()
-        main_options(user_details)
+        main_options(user_details, account_number_from_user)
 
-def balance():
-    set_current_balance(user_details, balance)
-    print('Your balance is %s.' % sum(account_balance))
+def balance(user_details):
+    get_current_balance(user_details)
+    print('Your balance is %s.' % (user_details[4]))
     
 def set_current_balance(user_details, balance):
     user_details[4] = balance
@@ -130,21 +130,23 @@ def get_current_balance(user_details):
 
 def withdrawal(user_details, account_number_from_user):
     amount_to_withdrawal = int(input('How much would you like to withdraw? \n'))
-    user_current_balance = get_current_balance(user_details)
-    current_balance = int(user_current_balance) - amount_to_withdrawal
-    update_user_balance = set_current_balance(user_details, current_balance)
+    current_user_balance = get_current_balance(user_details)
+    updated_balance = int(current_user_balance) - amount_to_withdrawal
+
+    set_current_balance(user_details, updated_balance)
     database.update_user_record( account_number_from_user, user_details )
     database.update_auth_session( account_number_from_user, user_details )
     print('Take your cash \n')
 
 def deposit(user_details, account_number_from_user):
     amount_to_deposit = int(input('How much would you like to deposit? \n'))
-    user_current_balance = get_current_balance(user_details)
-    current_balance = int(user_current_balance) + amount_to_deposit
-    set_current_balance((user_details), str(current_balance))
+    current_user_balance = get_current_balance(user_details)
+    updated_balance = int(current_user_balance) + amount_to_deposit
+
+    set_current_balance(user_details, updated_balance)
     database.update_user_record( account_number_from_user, user_details )
     database.update_auth_session( account_number_from_user, user_details )
-    print('Your current balance is %s' % sum(account_balance))
+    print('Your current balance is %s' % updated_balance)
 
 def complaint():
     input('What issue will you like to report? \n')
@@ -152,7 +154,7 @@ def complaint():
 
 def invalidOption():
     print('That is an invalid opti1on')
-    main_options(user_details)
+    main_options(user_details, account_number_from_user)
 
 def logout(account_number_from_user ):
     database.delete(account_number_from_user)
