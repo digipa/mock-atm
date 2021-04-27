@@ -36,12 +36,12 @@ def create( user_account_number, first_name, last_name, email, password, account
         
     else:
 
-        f.write(str(user_data));
+        f.write(str(user_data))
         completion_state = True
 
     finally:
 
-        f.close();
+        f.close()
         return completion_state
 
 # --------------------------------------- C R E A T E   A U T H   S E S S I O N ---------------------------------------
@@ -50,7 +50,7 @@ def create_auth_session( user_account_number ):
 
         duplicated_user_record_file = open(user_db_path + str(user_account_number) + ".txt").read()
         f = open(auth_session_path + str(user_account_number) + ".txt", "x")
-        f.write(str(duplicated_user_record_file));
+        f.write(str(duplicated_user_record_file))
 
 # ----------------------------------------------------- R E A D --------------------------------------------------------
 
@@ -83,8 +83,8 @@ def read(user_account_number):
 
 def update_user_record( user_account_number, user ):
     print("Update user record")
+
     current_balance = user[4]
-    
     updated_user = user[0] + "," + user[1] + "," + user[2] + "," + user[3] + "," + str(user[4])
 
     f = open(user_db_path + str(user_account_number) + ".txt", "w")
@@ -95,7 +95,6 @@ def update_user_record( user_account_number, user ):
 # -------------------------------------- U P D A T E   A U T H   S E S S I O N  -----------------------------------------
 
 def update_auth_session( user_account_number, user ):
-    print("Update user record")
     current_balance = user[4]
     
     updated_user = user[0] + "," + user[1] + "," + user[2] + "," + user[3] + "," + str(user[4])

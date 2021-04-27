@@ -40,7 +40,7 @@ def login():
 
         password = getpass("What is your password \n")
     
-        user = database.authenticated_user(account_number_from_user, password);
+        user = database.authenticated_user(account_number_from_user, password)
 
         if user:
             auth_session_created = database.create_auth_session( account_number_from_user )
@@ -54,7 +54,6 @@ def login():
 # # first name, last name, password, password match, username, email
 
 def register():
-    # set_current_balance = str(0)
 
     print('REGISTER')
 
@@ -82,7 +81,7 @@ def register():
 def generate_account_number():
     return random.randrange(1000000000, 9999999999)
 
-def main_options(user_details, account_number_from_user ):
+def main_options( user_details, account_number_from_user ):
 
     print('Welcome %s %s' % (user_details[0], user_details[1]))
 
@@ -111,8 +110,8 @@ def main_options(user_details, account_number_from_user ):
         logout(account_number_from_user)
 
     elif selection == 7:
-        print('Thank you %s %s. We look forward to seeing you again.' % (user[0], user[1]))
-        logout()
+        print('Thank you %s %s. We look forward to seeing you again.' % (user_details[0], user_details[1]))
+        logout(account_number_from_user)
         exit()
     else:
         invalidOption()

@@ -6,7 +6,7 @@ def main_options(user):
 
     print('Welcome %s %s' % (user[0], user[1]))
 
-    selection = int(input('What would you like to do?: 1: Balance 2: Withdrawal 3: Cash Deposit 4: Complaint 5: Main Options 6: Logout 7: Exit \n'))
+    selection = int(input('What would you like to do?: \n 1: Balance 2: Withdrawal 3: Cash Deposit 4: Complaint 5: Main Options 6: Logout 7: Exit \n'))
 
     if selection == 1:
         balance()
